@@ -1,0 +1,27 @@
+[{
+  "model": "piratesrareapi.comment",
+  "pk": 1,
+  "fields": {
+    "author": 1,
+    "post": 1,
+    "content": "This is a comment"
+  }
+},
+{
+  "model": "piratesrareapi.comment",
+  "pk": 2,
+  "fields": {
+    "author": 2,
+    "post": 2,
+    "content": "This is also a comment"
+  }
+},
+{
+  "model": "piratesrareapi.comment",
+  "pk": 3,
+  "fields": {
+    "author": 3,
+    "post": 3,
+    "content": "This is yet another comment"
+  }
+}]

@@ -1,0 +1,22 @@
+[{
+  "model": "piratesrareapi.tag",
+  "pk": 1,
+  "fields": {
+    "label": "tag1"
+  }
+},
+{
+  "model": "piratesrareapi.tag",
+  "pk": 2,
+  "fields": {
+    "label": "tag2"
+  }
+},
+{
+  "model": "piratesrareapi.tag",
+  "pk": 3,
+  "fields": {
+    "label": "tag3"
+  }
+}
+]
