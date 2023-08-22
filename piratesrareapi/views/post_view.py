@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from piratesrareapi.models import Post, User, Category
+from piratesrareapi.models import Post, Author, Category
 
 class PostView(ViewSet):
     def retrieve(self, request, pk=None):
@@ -28,7 +28,6 @@ class PostView(ViewSet):
             Response -- JSON serialized post instance
         """
         new_post = Post()
-        new_post.user = User.objects.get(pk=request.data["user_id"])
         new_post.category = Category.objects.get(pk=request.data["category"])
         new_post.title = request.data["title"]
         new_post.publication_date = request.data["publication_date"]
@@ -48,8 +47,6 @@ class PostView(ViewSet):
             Response -- Empty body with 204 status code
         """
         post = Post.objects.get(pk=pk)
-        user = User.objects.get(pk=request.data["user_id"])
-        post.user = user
         category = Category.objects.get(pk=request.data["category"])
         post.category = category
         post.title = request.data["title"]
@@ -62,6 +59,10 @@ class PostView(ViewSet):
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
+    def destroy(self, pk):
+        post = Post.objects.get(pk = pk)
+        post.delete()
+        return Response({}, status= status.HTTP_204_NO_CONTENT)
 class PostSerializer(serializers.ModelSerializer):
     """JSON serializer for posts
     Arguments:
@@ -69,5 +70,5 @@ class PostSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Post
-        fields = ('id', 'user', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved')
+        fields = ('id', 'author', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved')
         depth = 1
