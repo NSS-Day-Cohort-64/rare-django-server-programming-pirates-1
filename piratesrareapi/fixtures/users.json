@@ -1,16 +1,18 @@
 [{
-  "model": "piratesrareapi.user",
+  "model": "auth.user",
   "pk": 1,
   "fields": {
+    "password": "password",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "johnlennon",
     "first_name": "John",
     "last_name": "Lennon",
     "email": "j@lennon.com",
-    "bio": "not here anymore",
-    "username": "johnlennon",
-    "password": "password",
-    "profile_image_url": "https://www.biography.com/.image/t_share/MTIwNjA4NjMzNzY0MjQwMzQx/john-lennon---imagine---performing-live-in-concert-circa-1972-photo-by-michael-ochs-archivesgetty-images.jpg",
-    "created_on": "2020-04-01T00:00:00Z",
-    "active": true,
-    "is_staff": false
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2020-04-01T00:00:00Z",
+    "groups": [],
+    "user_permissions": []
   }
 }]
