@@ -16,7 +16,7 @@
   "model": "piratesrareapi.category",
   "pk": 3,
   "fields": {
-    "label": "Music"
+    "label": "Music!"
   }
 }
 ]
