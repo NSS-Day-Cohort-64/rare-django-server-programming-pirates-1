@@ -11,7 +11,7 @@
   "model": "piratesrareapi.comment",
   "pk": 2,
   "fields": {
-    "author": 2,
+    "author": 1,
     "post": 2,
     "content": "This is also a comment"
   }
@@ -20,7 +20,7 @@
   "model": "piratesrareapi.comment",
   "pk": 3,
   "fields": {
-    "author": 3,
+    "author": 1,
     "post": 3,
     "content": "This is yet another comment"
   }

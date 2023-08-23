@@ -2,7 +2,7 @@
   "model": "piratesrareapi.post",
   "pk": 1,
   "fields": {
-    "user": 1,
+    "author": 1,
     "category": 1,
     "title": "test_post",
     "publication_date": "2020-01-01",
@@ -15,7 +15,7 @@
   "model": "piratesrareapi.post",
   "pk": 2,
   "fields": {
-    "user": 2,
+    "author": 1,
     "category": 2,
     "title": "another_test_post",
     "publication_date": "2022-02-01",
@@ -28,7 +28,7 @@
   "model": "piratesrareapi.post",
   "pk": 3,
   "fields": {
-    "user": 3,
+    "author": 1,
     "category": 3,
     "title": "moare_test_post_title",
     "publication_date": "2023-03-01",
