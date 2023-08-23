@@ -28,9 +28,9 @@ class CommentView(ViewSet):
             Response -- JSON serialized comment instance
         """
         new_comment = Comment()
-        new_comment.author = Author.objects.get(pk=request.data["author_id"])
+        author = Author.objects.get(user = request.auth.user)
+        new_comment.author = author
         new_comment.post = Post.objects.get(pk=request.data["post"])
-        new_comment.author = request.data["author"]
         new_comment.content = request.data["content"]
 
         new_comment.save()
@@ -45,14 +45,19 @@ class CommentView(ViewSet):
             Response -- Empty body with 204 status code
         """
         comment = Comment.objects.get(pk=pk)
-        author = Author.objects.get(pk=request.data["author_id"])
-        comment.author = author
         post = Post.objects.get(pk=request.data["post"])
+        comment.post = post
         comment.content = request.data["content"]
 
         comment.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
+    
+    def destroy(self,_, pk):
+        comment = Comment.objects.get(pk=pk)
+        comment.delete()
+        return Response(None, status= status.HTTP_204_NO_CONTENT)
+
 
 class CommentSerializer(serializers.ModelSerializer):
     """JSON serializer for comments
@@ -61,4 +66,4 @@ class CommentSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Comment
-        fields = ('id', 'user', 'author', 'post', 'content')
+        fields = ('id', 'author', 'post', 'content')

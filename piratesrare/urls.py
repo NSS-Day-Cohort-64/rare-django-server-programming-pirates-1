@@ -18,13 +18,17 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from rest_framework import routers
-from piratesrareapi.views import PostView, CommentView
+from piratesrareapi.views import register_user, login_user, PostView, TagView, CategoryView, CommentView
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'posts', PostView, 'post')
+router.register(r'tags', TagView, 'tag')
+router.register(r'categories', CategoryView, 'category')
 router.register(r'comments', CommentView, 'comment')
 
 urlpatterns = [
+    path('register', register_user),
+    path('login', login_user),
     path('admin/', admin.site.urls),
     path('', include(router.urls))
 ]
