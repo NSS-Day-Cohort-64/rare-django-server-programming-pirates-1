@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from piratesrareapi.models import Comment, Post, User
+from piratesrareapi.models import Comment, Post, Author
 
 class CommentView(ViewSet):
     def retrieve(self, request, pk=None):
@@ -28,7 +28,7 @@ class CommentView(ViewSet):
             Response -- JSON serialized comment instance
         """
         new_comment = Comment()
-        new_comment.user = User.objects.get(pk=request.data["user_id"])
+        new_comment.author = Author.objects.get(pk=request.data["author_id"])
         new_comment.post = Post.objects.get(pk=request.data["post"])
         new_comment.author = request.data["author"]
         new_comment.content = request.data["content"]
@@ -45,8 +45,8 @@ class CommentView(ViewSet):
             Response -- Empty body with 204 status code
         """
         comment = Comment.objects.get(pk=pk)
-        user = User.objects.get(pk=request.data["user_id"])
-        comment.user = user
+        author = Author.objects.get(pk=request.data["author_id"])
+        comment.author = author
         post = Post.objects.get(pk=request.data["post"])
         comment.content = request.data["content"]
 
