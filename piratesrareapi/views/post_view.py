@@ -29,6 +29,8 @@ class PostView(ViewSet):
         """
         new_post = Post()
         new_post.category = Category.objects.get(pk=request.data["category"])
+        author = Author.objects.get(user = request.auth.user)
+        new_post.author = author
         new_post.title = request.data["title"]
         new_post.publication_date = request.data["publication_date"]
         new_post.image_url = request.data["image_url"]
@@ -57,12 +59,13 @@ class PostView(ViewSet):
 
         post.save()
 
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
-    def destroy(self, pk):
-        post = Post.objects.get(pk = pk)
+    def destroy(self,_, pk):
+        post = Post.objects.get(pk=pk)
         post.delete()
-        return Response({}, status= status.HTTP_204_NO_CONTENT)
+        return Response(None, status= status.HTTP_204_NO_CONTENT)
+    
 class PostSerializer(serializers.ModelSerializer):
     """JSON serializer for posts
     Arguments:
