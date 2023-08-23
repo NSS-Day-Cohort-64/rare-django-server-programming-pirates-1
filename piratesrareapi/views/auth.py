@@ -47,8 +47,6 @@ def register_user(request):
     )
 
     author = Author.objects.create(
-        bio=request.data['bio'],
-        profile_image_url=request.data['profile_image_url'],
         created_on=datetime.now(),
         active=True,
         user = new_user
