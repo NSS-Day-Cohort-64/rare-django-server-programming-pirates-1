@@ -1,0 +1,13 @@
+[{
+    "model": "piratesrareapi.author",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "bio": "I am happ",
+      "profile_image_url": "https://www.google.com",
+      "created_on": "2020-01-01",
+      "active": true
+    }
+  }
+  ]
+  
