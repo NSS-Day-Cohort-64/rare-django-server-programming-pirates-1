@@ -11,7 +11,7 @@ class TagView(ViewSet):
         """
         tag = Tag.objects.get(pk=pk)
         serializer = TagSerializer(tag)
-        return Response(serializer.data)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
     def list(self, request):
         """Handle GET requests to tags resource
@@ -19,8 +19,9 @@ class TagView(ViewSet):
             Response -- JSON serialized list of tags
         """
         tags = Tag.objects.all()
-        serializer = TagSerializer(tags, many=True)
-        return Response(serializer.data)
+        sortedTags = sorted(tags, key=lambda x: x.label)
+        serializer = TagSerializer(sortedTags, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
     def create(self, request):
         """Handle POST operations
@@ -34,7 +35,7 @@ class TagView(ViewSet):
 
         serializer = TagSerializer(new_tag, context={'request': request})
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk):
         """Handle PUT requests for a tag

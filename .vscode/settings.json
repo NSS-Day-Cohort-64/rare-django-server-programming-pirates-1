@@ -3,4 +3,9 @@
         "--load-plugins=pylint_django",
         "--django-settings-module=piratesapi.settings",
     ],
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#0D3514",
+        "titleBar.activeBackground": "#134A1D",
+        "titleBar.activeForeground": "#F5FDF6"
+    },
 }
