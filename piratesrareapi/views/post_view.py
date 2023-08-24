@@ -19,6 +19,18 @@ class PostView(ViewSet):
         Returns:
             Response -- JSON serialized list of posts
         """
+    def list(self, request):
+        """Handle GET requests to posts resource
+        Returns:
+            Response -- JSON serialized list of posts
+        """
+        posts = Post.objects.all()
+        
+    def list(self, request):
+        """Handle GET requests to posts resource
+        Returns:
+            Response -- JSON serialized list of posts
+        """
         posts = Post.objects.order_by('-publication_date')
         if "user" in request.query_params:
             author = Author.objects.get(user=request.auth.user)
@@ -33,11 +45,11 @@ class PostView(ViewSet):
             Response -- JSON serialized post instance
         """
         new_post = Post()
-        new_post.category = Category.objects.get(pk=request.data["category"])
+        new_post.category = Category.objects.get(pk=request.data["category_id"])
         author = Author.objects.get(user = request.auth.user)
         new_post.author = author
         new_post.title = request.data["title"]
-        new_post.publication_date = datetime.now().date()
+        new_post.publication_date = datetime.now()
         new_post.image_url = request.data["image_url"]
         new_post.content = request.data["content"]
         new_post.approved = True
