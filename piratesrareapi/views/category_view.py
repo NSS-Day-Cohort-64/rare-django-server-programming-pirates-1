@@ -27,10 +27,11 @@ class CategoryView(ViewSet):
         if filter_by:
             categories = categories.filter(label__icontains=filter_by)
 
-        categories = categories.order_by(sort_by)
+            categories = categories.order_by(sort_by)
 
-#         categories = Category.objects.all().order_by('label')
-# >>>>>>> main
+        else:
+            categories = categories.all()
+
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
