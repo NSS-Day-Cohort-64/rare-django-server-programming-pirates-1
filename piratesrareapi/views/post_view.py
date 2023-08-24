@@ -70,12 +70,21 @@ class PostView(ViewSet):
         post = Post.objects.get(pk=pk)
         post.delete()
         return Response(None, status= status.HTTP_204_NO_CONTENT)
-    
+
+class PostAuthorSerializer(serializers.ModelSerializer):
+    """JSON serializer for post author
+    Arguments:
+        serializer type
+    """
+    class Meta:
+        model = Author
+        fields = ('full_name',)
 class PostSerializer(serializers.ModelSerializer):
     """JSON serializer for posts
     Arguments:
         serializer type
     """
+    author = PostAuthorSerializer(many=False)
     class Meta:
         model = Post
         fields = ('id', 'author', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved')
