@@ -18,9 +18,20 @@ class CategoryView(ViewSet):
         Returns:
             Response -- JSON serialized list of categories
         """
-        categories = Category.objects.all()
+
+        sort_by = request.query_params.get('sort_by', 'label')
+        filter_by = request.query_params.get('filter_by', '')
+
+        categories = Category.objects.all().order_by('label')  # Define categories queryset here
+
+        if filter_by:
+            categories = categories.filter(label__icontains=filter_by)
+
+            categories = categories.order_by(sort_by)
+
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
+
 
     def create(self, request):
         """Handle POST operations
