@@ -29,6 +29,8 @@ class CategoryView(ViewSet):
 
         categories = categories.order_by(sort_by)
 
+#         categories = Category.objects.all().order_by('label')
+# >>>>>>> main
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
