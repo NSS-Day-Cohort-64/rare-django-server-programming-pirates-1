@@ -4,8 +4,8 @@
         "--django-settings-module=piratesapi.settings",
     ],
     "workbench.colorCustomizations": {
-        "activityBar.background": "#0D3514",
-        "titleBar.activeBackground": "#134A1D",
-        "titleBar.activeForeground": "#F5FDF6"
+        "activityBar.background": "#570945",
+        "titleBar.activeBackground": "#7A0D61",
+        "titleBar.activeForeground": "#FFFBFE"
     },
 }
