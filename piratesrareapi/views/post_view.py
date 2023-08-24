@@ -50,7 +50,7 @@ class PostView(ViewSet):
             Response -- Empty body with 204 status code
         """
         post = Post.objects.get(pk=pk)
-        category = Category.objects.get(pk=request.data["category"])
+        category = Category.objects.get(pk=request.data["category_id"])
         post.category = category
         post.title = request.data["title"]
         post.publication_date = request.data["publication_date"]
