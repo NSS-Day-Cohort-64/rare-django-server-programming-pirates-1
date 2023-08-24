@@ -2,6 +2,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from piratesrareapi.models import Post, Author, Category
+from datetime import datetime
 
 class PostView(ViewSet):
     def retrieve(self, request, pk=None):
@@ -39,10 +40,10 @@ class PostView(ViewSet):
         author = Author.objects.get(user = request.auth.user)
         new_post.author = author
         new_post.title = request.data["title"]
-        new_post.publication_date = request.data["publication_date"]
+        new_post.publication_date = datetime.now().date()
         new_post.image_url = request.data["image_url"]
         new_post.content = request.data["content"]
-        new_post.approved = request.data["approved"]
+        new_post.approved = True
 
         new_post.save()
 
@@ -56,7 +57,7 @@ class PostView(ViewSet):
             Response -- Empty body with 204 status code
         """
         post = Post.objects.get(pk=pk)
-        category = Category.objects.get(pk=request.data["category"])
+        category = Category.objects.get(pk=request.data["category_id"])
         post.category = category
         post.title = request.data["title"]
         post.publication_date = request.data["publication_date"]
