@@ -19,13 +19,10 @@ class PostView(ViewSet):
         Returns:
             Response -- JSON serialized list of posts
         """
-        user = request.query_params.get('user', None)
-        posts = Post.objects.all()
-        
-        if user:
-            posts = posts.filter(author_id=user)
-        
-        posts = posts.order_by('publication_date')
+        posts = Post.objects.order_by('-publication_date')
+        if "user" in request.query_params:
+            author = Author.objects.get(user=request.auth.user)
+            posts = posts.filter(author=author)
         
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
