@@ -19,6 +19,11 @@ class PostView(ViewSet):
         Returns:
             Response -- JSON serialized list of posts
         """
+    def list(self, request):
+        """Handle GET requests to posts resource
+        Returns:
+            Response -- JSON serialized list of posts
+        """
         posts = Post.objects.all()
         
     def list(self, request):
@@ -77,7 +82,7 @@ class PostView(ViewSet):
         post = Post.objects.get(pk=pk)
         post.delete()
         return Response(None, status= status.HTTP_204_NO_CONTENT)
-    
+
 class PostAuthorSerializer(serializers.ModelSerializer):
     """JSON serializer for post author
     Arguments:

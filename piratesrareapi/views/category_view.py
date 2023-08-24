@@ -36,16 +36,14 @@ class CategoryView(ViewSet):
     def create(self, request):
         """Handle POST operations
         Returns:
-            Response -- JSON serialized category instance
+            Response -- JSON serialized category instance or error message
         """
-        new_category = Category()
-        new_category.label = request.data["label"]
-
-        new_category.save()
-
-        serializer = CategorySerializer(new_category, context={'request': request})
-
-        return Response(serializer.data)
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk):
         """Handle PUT requests for a category
@@ -53,7 +51,7 @@ class CategoryView(ViewSet):
             Response -- Empty body with 204 status code
         """
         category = Category.objects.get(pk=pk)
-        category.label = request.data["label"]
+        category.label = normalize_label(request.data["label"])  # Normalize label here
 
         category.save()
 
@@ -67,6 +65,11 @@ class CategoryView(ViewSet):
         category = Category.objects.get(pk=pk)
         category.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+def normalize_label(label):
+    # Implement your label normalization logic here
+    # For example, you can convert the label to lowercase and remove leading/trailing spaces
+    return label.strip().lower()
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
