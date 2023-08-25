@@ -14,17 +14,6 @@ class PostView(ViewSet):
         serializer = PostSerializer(post)
         return Response(serializer.data)
 
-    def list(self, request):
-        """Handle GET requests to posts resource
-        Returns:
-            Response -- JSON serialized list of posts
-        """
-    def list(self, request):
-        """Handle GET requests to posts resource
-        Returns:
-            Response -- JSON serialized list of posts
-        """
-        posts = Post.objects.all()
         
     def list(self, request):
         """Handle GET requests to posts resource
