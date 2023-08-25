@@ -1,4 +1,5 @@
 from rest_framework.viewsets import ViewSet
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from piratesrareapi.models import Post, Author, Category
@@ -13,7 +14,6 @@ class PostView(ViewSet):
         post = Post.objects.get(pk=pk)
         serializer = PostSerializer(post)
         return Response(serializer.data)
-
         
     def list(self, request):
         """Handle GET requests to posts resource
@@ -71,6 +71,19 @@ class PostView(ViewSet):
         post = Post.objects.get(pk=pk)
         post.delete()
         return Response(None, status= status.HTTP_204_NO_CONTENT)
+    
+    @action(detail=True, methods=['get'])
+    def get_post_details(self, request, pk=None):
+        """Handle GET request for post details
+        Returns:
+            Response -- JSON serialized post details
+        """
+        try:
+            post = Post.objects.get(pk=pk)
+            serializer = PostSerializer(post)
+            return Response(serializer.data)
+        except Post.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class PostAuthorSerializer(serializers.ModelSerializer):
     """JSON serializer for post author
@@ -80,6 +93,7 @@ class PostAuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ('full_name',)
+
 class PostSerializer(serializers.ModelSerializer):
     """JSON serializer for posts
     Arguments:
