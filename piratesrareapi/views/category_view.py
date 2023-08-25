@@ -2,6 +2,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from piratesrareapi.models import Category
+from django.db.models.functions import Lower
 
 class CategoryView(ViewSet):
     def retrieve(self, request, pk=None):
@@ -22,7 +23,9 @@ class CategoryView(ViewSet):
         sort_by = request.query_params.get('sort_by', 'label')
         filter_by = request.query_params.get('filter_by', '')
 
-        categories = Category.objects.all().order_by('label')  # Define categories queryset here
+        categories = Category.objects.all().annotate(
+            label_lower=Lower('label')
+        ).order_by('label_lower')
 
         if filter_by:
             categories = categories.filter(label__icontains=filter_by)
@@ -51,11 +54,11 @@ class CategoryView(ViewSet):
             Response -- Empty body with 204 status code
         """
         category = Category.objects.get(pk=pk)
-        category.label = normalize_label(request.data["label"])  # Normalize label here
+        category.label = request.data["label"]
 
         category.save()
 
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
     def destroy(self, request, pk=None):
         """Handle DELETE requests for a single category
@@ -65,11 +68,6 @@ class CategoryView(ViewSet):
         category = Category.objects.get(pk=pk)
         category.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-
-def normalize_label(label):
-    # Implement your label normalization logic here
-    # For example, you can convert the label to lowercase and remove leading/trailing spaces
-    return label.strip().lower()
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
