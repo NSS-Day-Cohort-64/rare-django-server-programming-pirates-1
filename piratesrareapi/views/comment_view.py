@@ -2,6 +2,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from piratesrareapi.models import Comment, Post, Author
+from datetime import datetime
 
 class CommentView(ViewSet):
     def retrieve(self, request, pk=None):
@@ -18,7 +19,15 @@ class CommentView(ViewSet):
         Returns:
             Response -- JSON serialized list of comments
         """
-        comments = Comment.objects.all()
+        # Get the value of the 'post' query parameter from the request
+        post_id = self.request.query_params.get('post')
+
+        # Filter comments based on the provided 'post' query parameter
+        if post_id:
+            comments = Comment.objects.filter(post=post_id)
+        else:
+            comments = Comment.objects.all()
+
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
@@ -37,7 +46,7 @@ class CommentView(ViewSet):
 
         serializer = CommentSerializer(new_comment, context={'request': request})
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk):
         """Handle PUT requests for a comment
@@ -64,6 +73,8 @@ class CommentSerializer(serializers.ModelSerializer):
     Arguments:
         serializer type
     """
+    created_at = serializers.DateTimeField(default=datetime.now, read_only=True)
+    
     class Meta:
         model = Comment
-        fields = ('id', 'author', 'post', 'content')
+        fields = ('id', 'author', 'post', 'content', 'created_at')
