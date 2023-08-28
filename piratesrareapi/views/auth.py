@@ -20,10 +20,11 @@ def login_user(request):
     password = request.data['password']
 
     authenticated_user = authenticate(username=username, password=password)
-
+    print(authenticated_user)
     if authenticated_user is not None:
         token = Token.objects.get(user=authenticated_user)
-        data = { 'valid': True, 'token': token.key }
+        user = Author.objects.get(user_id=authenticated_user)
+        data = { 'valid': True, 'token': token.key, 'user': int(user.id) }
         return Response(data)
     else:
         data = { 'valid': False }
