@@ -5,6 +5,7 @@ from rest_framework import serializers, status
 from piratesrareapi.models import Post, Author, Category, Tag
 from datetime import datetime
 
+
 class PostView(ViewSet):
     def retrieve(self, request, pk=None):
         """Handle GET requests for single post
@@ -14,7 +15,7 @@ class PostView(ViewSet):
         post = Post.objects.get(pk=pk)
         serializer = PostSerializer(post)
         return Response(serializer.data)
-        
+
     def list(self, request):
         """Handle GET requests to posts resource
         Returns:
@@ -24,7 +25,7 @@ class PostView(ViewSet):
         if "user" in request.query_params:
             author = Author.objects.get(user=request.auth.user)
             posts = posts.filter(author=author)
-        
+
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -34,8 +35,9 @@ class PostView(ViewSet):
             Response -- JSON serialized post instance
         """
         new_post = Post()
-        new_post.category = Category.objects.get(pk=request.data["category_id"])
-        author = Author.objects.get(user = request.auth.user)
+        new_post.category = Category.objects.get(
+            pk=request.data["category_id"])
+        author = Author.objects.get(user=request.auth.user)
         new_post.author = author
         new_post.title = request.data["title"]
         new_post.publication_date = datetime.now()
@@ -65,11 +67,11 @@ class PostView(ViewSet):
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
-    def destroy(self,_, pk):
+    def destroy(self, _, pk):
         post = Post.objects.get(pk=pk)
         post.delete()
-        return Response(None, status= status.HTTP_204_NO_CONTENT)
-    
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
     @action(detail=True, methods=['get'])
     def get_post_details(self, request, pk=None):
         """Handle GET request for post details
@@ -82,7 +84,8 @@ class PostView(ViewSet):
             return Response(serializer.data)
         except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
+    @action(detail=True, methods=['post'])
     def manage_tags(self, request, pk=None):
         """Handle POST operation to manage tags for a post"""
         post = Post.objects.get(pk=pk)
@@ -103,6 +106,7 @@ class PostAuthorSerializer(serializers.ModelSerializer):
         model = Author
         fields = ('full_name',)
 
+
 class TagSerializer(serializers.ModelSerializer):
     """JSON serializer for post tags
     Arguments:
@@ -112,6 +116,7 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ('id', 'label')
 
+
 class PostSerializer(serializers.ModelSerializer):
     """JSON serializer for posts
     Arguments:
@@ -119,7 +124,9 @@ class PostSerializer(serializers.ModelSerializer):
     """
     author = PostAuthorSerializer(many=False)
     tags = TagSerializer(many=True)
+
     class Meta:
         model = Post
-        fields = ('id', 'author', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved', 'tags')
+        fields = ('id', 'author', 'category', 'title', 'publication_date',
+                  'image_url', 'content', 'approved', 'tags')
         depth = 1
