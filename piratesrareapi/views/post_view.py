@@ -2,7 +2,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from piratesrareapi.models import Post, Author, Category
+from piratesrareapi.models import Post, Author, Category, Tag
 from datetime import datetime
 
 class PostView(ViewSet):
@@ -84,6 +84,17 @@ class PostView(ViewSet):
             return Response(serializer.data)
         except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    def manage_tags(self, request, pk=None):
+        """Handle POST operation to manage tags for a post"""
+        post = Post.objects.get(pk=pk)
+        selected_tag_ids = request.data.get('selected_tags', [])
+
+        post.tags.set(selected_tag_ids)  # Update tags field
+        post.save()
+
+        serializer = PostSerializer(post, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class PostAuthorSerializer(serializers.ModelSerializer):
     """JSON serializer for post author
@@ -94,13 +105,23 @@ class PostAuthorSerializer(serializers.ModelSerializer):
         model = Author
         fields = ('full_name',)
 
+class TagSerializer(serializers.ModelSerializer):
+    """JSON serializer for post tags
+    Arguments:
+        serializer type
+    """
+    class Meta:
+        model = Tag
+        fields = ('id', 'label')
+
 class PostSerializer(serializers.ModelSerializer):
     """JSON serializer for posts
     Arguments:
         serializer type
     """
     author = PostAuthorSerializer(many=False)
+    tags = TagSerializer(many=True)
     class Meta:
         model = Post
-        fields = ('id', 'author', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved')
+        fields = ('id', 'author', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved', 'tags')
         depth = 1

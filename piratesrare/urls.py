@@ -33,4 +33,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('comments/', CommentView.as_view({'post': 'create'}), name='comment-create'),
+    path('posts/<int:pk>/manage_tags', PostView.as_view({'post': 'manage_tags'}), name='post-manage-tags'),
 ]
