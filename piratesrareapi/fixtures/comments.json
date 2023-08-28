@@ -4,7 +4,9 @@
   "fields": {
     "author": 1,
     "post": 1,
-    "content": "This is a comment"
+    "subject": "First Comment",
+    "content": "This is a comment",
+    "creation_date": "2019-10-10T17:00:00Z"
   }
 },
 {
@@ -13,7 +15,9 @@
   "fields": {
     "author": 1,
     "post": 2,
-    "content": "This is also a comment"
+    "subject": "Second Comment",
+    "content": "This is also a comment",
+    "creation_date": "2019-10-10T17:00:00Z"
   }
 },
 {
@@ -22,6 +26,8 @@
   "fields": {
     "author": 1,
     "post": 3,
-    "content": "This is yet another comment!"
+    "subject": "Third Comment",
+    "content": "This is yet another comment!",
+    "creation_date": "2019-10-10T17:00:00Z"
   }
 }]

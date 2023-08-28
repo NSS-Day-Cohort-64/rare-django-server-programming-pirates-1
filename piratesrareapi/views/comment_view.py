@@ -14,20 +14,20 @@ class CommentView(ViewSet):
         serializer = CommentSerializer(comment)
         return Response(serializer.data)
 
+class CommentView(ViewSet):
+    # ...
+
     def list(self, request):
         """Handle GET requests to comments resource
         Returns:
             Response -- JSON serialized list of comments
         """
-        # Get the value of the 'post' query parameter from the request
-        post_id = self.request.query_params.get('post')
-
-        # Filter comments based on the provided 'post' query parameter
-        if post_id:
-            comments = Comment.objects.filter(post=post_id)
-        else:
-            comments = Comment.objects.all()
-
+        comments = Comment.objects.order_by('-creation_date')
+        
+        if "post" in request.query_params:
+            post_id = request.query_params.get("post")
+            comments = comments.filter(post=post_id)
+        
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
@@ -40,7 +40,9 @@ class CommentView(ViewSet):
         author = Author.objects.get(user = request.auth.user)
         new_comment.author = author
         new_comment.post = Post.objects.get(pk=request.data["post"])
+        new_comment.subject = request.data["subject"]
         new_comment.content = request.data["content"]
+        new_comment.creation_date = datetime.now()
 
         new_comment.save()
 
@@ -56,7 +58,9 @@ class CommentView(ViewSet):
         comment = Comment.objects.get(pk=pk)
         post = Post.objects.get(pk=request.data["post"])
         comment.post = post
+        comment.subject = request.data["subject"]
         comment.content = request.data["content"]
+        
 
         comment.save()
 
@@ -68,13 +72,23 @@ class CommentView(ViewSet):
         return Response(None, status= status.HTTP_204_NO_CONTENT)
 
 
+class AuthorCommentSerializer(serializers.ModelSerializer):
+    """JSON serializer for comments
+    Arguments:
+        serializer type
+    """
+    class Meta:
+        model = Author
+        fields = ('id', 'username',)
+
 class CommentSerializer(serializers.ModelSerializer):
     """JSON serializer for comments
     Arguments:
         serializer type
     """
-    created_at = serializers.DateTimeField(default=datetime.now, read_only=True)
+    author_username = serializers.CharField(source='author.user.username')
+    creation_date = serializers.DateTimeField(default=datetime.now, read_only=True)
     
     class Meta:
         model = Comment
-        fields = ('id', 'author', 'post', 'content', 'created_at')
+        fields = ('id', 'author', 'author_username', 'post', 'subject', 'content', 'creation_date',)

@@ -45,6 +45,7 @@ def register_user(request):
         last_name=request.data['last_name'],
         email=request.data['email'],
         password=request.data['password'],
+        is_staff=True
     )
 
     author = Author.objects.create(
