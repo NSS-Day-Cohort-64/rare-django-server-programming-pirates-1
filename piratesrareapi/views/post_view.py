@@ -59,6 +59,9 @@ class PostView(ViewSet):
         post = Post.objects.get(pk=pk)
         if "approved" in request.data:
             post.approved = request.data["approved"]
+        elif "tags" in request.data:
+            post.tags.set(["tags"])
+            
         else:
             category = Category.objects.get(pk=request.data["category_id"])
             post.category = category
