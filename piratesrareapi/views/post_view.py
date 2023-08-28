@@ -43,7 +43,7 @@ class PostView(ViewSet):
         new_post.publication_date = datetime.now()
         new_post.image_url = request.data["image_url"]
         new_post.content = request.data["content"]
-        new_post.approved = True
+        new_post.approved = False
 
         new_post.save()
 
@@ -57,11 +57,14 @@ class PostView(ViewSet):
             Response -- Empty body with 204 status code
         """
         post = Post.objects.get(pk=pk)
-        category = Category.objects.get(pk=request.data["category_id"])
-        post.category = category
-        post.title = request.data["title"]
-        post.image_url = request.data["image_url"]
-        post.content = request.data["content"]
+        if "approved" in request.data:
+            post.approved = request.data["approved"]
+        else:
+            category = Category.objects.get(pk=request.data["category_id"])
+            post.category = category
+            post.title = request.data["title"]
+            post.image_url = request.data["image_url"]
+            post.content = request.data["content"]
 
         post.save()
 
