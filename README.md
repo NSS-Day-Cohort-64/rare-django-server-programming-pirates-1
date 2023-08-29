@@ -48,7 +48,7 @@ If you encounter any issues or need assistance with the Rare Publishing Platform
 
 The Rare Publishing Platform is a collaborative effort made possible by the contributions of:
 
-- [Logan Belew, Brandon Highland, Sarah Saturday]
+- [Logan Belew, Brandon Highland, Sarah Saturday, Sam Thrasher]
 
 We believe in open-source collaboration and welcome contributions from developers of all skill levels. Whether you're interested in frontend development, backend logic, documentation, or testing, your efforts are valuable to us.
 
