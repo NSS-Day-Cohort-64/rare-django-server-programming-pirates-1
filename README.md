@@ -41,11 +41,8 @@ For the server-side:
 
 ## Help
 
-If you encounter any issues or need assistance with the Rare Publishing Platform, you can find help in the following ways:
-
-- Refer to the project's documentation in the `docs` directory.
+If you encounter any issues or need assistance with the Rare Publishing Platform, you can find help in the following way:
 - Create a new issue in the repository's issue tracker for technical support.
-- Join the community discussions on our Discord server for user-to-user assistance.
 
 ## Contributions
 
